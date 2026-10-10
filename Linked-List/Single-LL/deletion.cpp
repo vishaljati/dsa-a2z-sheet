@@ -51,12 +51,15 @@ void traversal(Node *head)
 
 Node *deletefromhead(Node *head)
 {
-    if (head == nullptr)
+    if (head == nullptr ||head->next ==nullptr )
     {
         return nullptr;
     }
     Node *temp = head;
+    
     head = head->next;
+    
+    temp->next=nullptr;
     delete temp;
 
     return head;
@@ -82,57 +85,40 @@ Node *deletefromtail(Node *head)
 
     return head;
 }
-Node *deleteKthNode(Node *head, int k)
-{
-    if (head == nullptr)
-    {
-        return nullptr;
-    }
-    int len = 0;
 
-    Node *mover = head;
-    while (mover)
-    {
-        len++;
-        mover = mover->next;
-    }
-    // invalid node
-    if (k > len)
-        return nullptr;
-    // delete head
+Node* deleteKthNode(Node* head, int k)
+{
+    if (head == nullptr || k <= 0)
+        return head;
+
+    // Delete the head node
     if (k == 1)
     {
-        Node *temp = head;
+        Node* temp = head;
         head = head->next;
         delete temp;
         return head;
     }
-    // delete tail
-    if (k == len)
-    {
-        Node *temp = head;
-        while (temp->next->next != nullptr)
-        {
-            temp = temp->next;
-        }
-        delete temp->next;
-        temp->next = nullptr;
-
-        return head;
-    }
 
     Node* prev = head;
-    Node* temp=head->next;
-    int l=2;
-    while(temp && l!=k){
-        prev=temp;
-        temp=temp->next;
+
+    // Reach the (k-1)th node
+    for (int i = 1; i < k - 1 && prev != nullptr; i++)
+    {
+        prev = prev->next;
     }
-    prev->next=temp->next;
+
+    // k is greater than the list length
+    if (prev == nullptr || prev->next == nullptr)
+        return head;
+
+    Node* temp = prev->next;
+    prev->next = temp->next;
     delete temp;
 
     return head;
 }
+
 Node *deletebyvalue(Node*head ,int value){
     if(head==nullptr) return head;
     Node *temp=head;
@@ -153,13 +139,13 @@ int main()
 {
     cout << "---Linked List---" << endl;
     int k;
-    vector<int> arr = {1,2,3,4,5};
+    vector<int> arr = {1};
     Node *head = array2LL(arr);
     traversal(head);
 
-    cout << "---Deleting Kth Node---" << endl;
+    cout << "---Deleting head Node---" << endl;
 
-    Node* newHead = deletebyvalue(head, 5);
+    Node* newHead = deletefromhead(head);
     traversal(newHead);
 
     return 0;
