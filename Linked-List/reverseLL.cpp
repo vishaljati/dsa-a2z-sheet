@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 using namespace std;
-
+// REVERSE SINGLE LL
 class Node{
 public:
     int data;
